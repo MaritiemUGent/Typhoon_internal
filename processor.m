@@ -23,11 +23,11 @@ function []=processor(results,lattice,state,geo,ref,stability);
         
    switch quest
         case 1    
-             solverloop6(results,1,JID,lattice,state,geo,ref);%Simple solution
+            solverloop6(results,1,JID,lattice,state,geo,ref);%Simple solution
 	   case 2 
 			equilibrium1(results,state,geo,lattice,ref);
 	   case 3
-			 LongStab1(results,JID,lattice,state,geo,ref,stability);
+			LongStab1(results,JID,lattice,state,geo,ref,stability);
 %         case 2
 %             %Parameter sweep loop
 %             quest2=questions(18);

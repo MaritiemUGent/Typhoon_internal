@@ -77,9 +77,19 @@ results.dwcond=cond(u1);		%ALEC - why?
 % Setting up wavemaking contributions %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 state.message=0;
-%[uw1, Uw1, state] = wave(lattice,geo,state);
- [test1 test2 test3] = size(Um1);
- uw1 = zeros(test1,test2); Uw1 = zeros(test1,test2,test3);
+try
+	state.wavemethod;
+catch
+	state.wavemethod = 1;
+end
+
+
+if (state.wavemethod==1)
+	[uw1, Uw1, state] = wave(lattice,geo,state);
+else
+	[test1 test2 test3] = size(Um1);
+	uw1 = zeros(test1,test2); Uw1 = zeros(test1,test2,test3);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Setting up right hand side %
@@ -193,9 +203,16 @@ c3=lattice.COLLOC-ones(size(lattice.COLLOC,1),1)*geo.ref_point;
 [u2 U2]=fastdw(lattice,0);	        %Calculating downwash on vorticies, new AIC matrix
 [um2 Um2]=fastdw(lattice,1);		%fastdw happens again as it now gets
 %um2=-um2; Um2=-Um2;
-%[uw2 Uw2]=wave(lattice,geo,state);	%calculated for new control point.
-uw2 = zeros(test1,test2); Uw2 = zeros(test1,test2,test3);
-%test no waves
+
+if (state.wavemethod==1)
+	[uw2, Uw2] = wave(lattice,geo,state);
+else
+	[test1 test2 test3] = size(Um1);
+	uw2 = zeros(test1,test2); Uw2 = zeros(test1,test2,test3);
+end
+% %[uw2 Uw2]=wave(lattice,geo,state);	%calculated for new control point.
+% uw2 = zeros(test1,test2); Uw2 = zeros(test1,test2,test3);
+% %test no waves
 
 [s1 s2]=size(p1);
 
